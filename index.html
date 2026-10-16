@@ -301,37 +301,146 @@
       }
     }
 
-    function renderSummary() {
-      content.innerHTML = `
-        <div class="step-label">ALL DONE</div>
-        <h2>We've got the picture!</h2>
-        <div class="result">
-          <p id="summary"></p>
-          <p>
-            Your product picks will appear here once
-            we've connected the verified catalog.
-          </p>
-        </div>
-        <div class="actions">
-          <button class="back" id="restart">
-            Start again
-          </button>
-        </div>
-      `;
 
-      document.getElementById("summary").textContent =
-        `Shopping for: ${answers.recipient}. ` +
-        `Pet: ${answers.animal}. ` +
-        `Occasion: ${answers.occasion}. ` +
-        `Budget: ${answers.budget}.`;
+async function renderSummary() {
+  content.innerHTML = `
+    <div class="step-label">ALL DONE</div>
+    <h2>We've got the picture!</h2>
+    <div class="result">
+      <p id="summary"></p>
+      <div id="recommendations">
+        Finding your perfect gifts...
+      </div>
+    </div>
+    <div class="actions">
+      <button class="back" id="restart">
+        Start again
+      </button>
+    </div>
+  `;
 
-      document.getElementById("restart")
-        .addEventListener("click", () => {
-          step = 0;
-          Object.keys(answers).forEach(key => delete answers[key]);
-          render();
-        });
+  document.getElementById("summary").textContent =
+    `Shopping for: ${answers.recipient}. ` +
+    `Pet: ${answers.animal}. ` +
+    `Occasion: ${answers.occasion}. ` +
+    `Budget: ${answers.budget}.`;
+
+  document.getElementById("restart")
+    .addEventListener("click", () => {
+      step = 0;
+      Object.keys(answers).forEach(
+        key => delete answers[key]
+      );
+      render();
+    });
+
+  const container = document.getElementById("recommendations");
+
+  try {
+    const response = await fetch(CATALOG_API_URL);
+
+    if (!response.ok) {
+      throw new Error("Catalog request failed");
     }
+
+    const data = await response.json();
+    const products = data.products || [];
+
+    const animal = answers.animal.toLowerCase();
+    const occasion = answers.occasion.toLowerCase();
+    const recipient = answers.recipient.toLowerCase();
+
+    const budget = answers.budget;
+
+    const maxPrice =
+      budget === "Under $25" ? 25 :
+      budget === "$25–$50" ? 50 :
+      Infinity;
+
+    const minPrice =
+      budget === "$25–$50" ? 25 : 0;
+
+    const matches = products
+      .filter(product => {
+        const price = Number(product.price);
+
+        const animalMatch =
+          product.animal.toLowerCase() === animal ||
+          product.animal.toLowerCase() === "any";
+
+        const occasionMatch =
+          product.occasion.toLowerCase() === occasion ||
+          product.occasion.toLowerCase() === "any occasion";
+
+        const recipientMatch =
+          product.recipient.toLowerCase() === recipient ||
+          product.recipient.toLowerCase() === "pet lover";
+
+        const budgetMatch =
+          price >= minPrice && price <= maxPrice;
+
+        return animalMatch &&
+          occasionMatch &&
+          recipientMatch &&
+          budgetMatch;
+      })
+      .slice(0, 6);
+
+    container.textContent = "";
+
+    if (!matches.length) {
+      container.textContent =
+        "No exact matches found for these preferences yet. Try another budget or occasion.";
+      return;
+    }
+
+    const heading = document.createElement("h3");
+    heading.textContent = "Your personalized gift picks";
+    container.appendChild(heading);
+
+    const grid = document.createElement("div");
+    grid.style.cssText =
+      "display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:20px;";
+
+    matches.forEach(product => {
+      const card = document.createElement("div");
+      card.style.cssText =
+        "background:white;border:1px solid #eee;border-radius:14px;padding:14px;";
+
+      const img = document.createElement("img");
+      img.src = product.image;
+      img.alt = product.name;
+      img.loading = "lazy";
+      img.style.cssText =
+        "width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;";
+
+      const name = document.createElement("h4");
+      name.textContent = product.name;
+
+      const price = document.createElement("p");
+      price.textContent =
+        "From $" + Number(product.price).toFixed(2);
+
+      const link = document.createElement("a");
+      link.href = product.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = "View gift";
+      link.style.cssText =
+        "display:block;background:#ED931B;color:#111;text-align:center;padding:12px;border-radius:9px;text-decoration:none;font-weight:bold;";
+
+      card.append(img, name, price, link);
+      grid.appendChild(card);
+    });
+
+    container.appendChild(grid);
+
+  } catch (error) {
+    console.error("Gift finder error:", error);
+    container.textContent =
+      "We couldn't load the gift catalog. Please try again later.";
+  }
+}
 
     render();
   </script>
