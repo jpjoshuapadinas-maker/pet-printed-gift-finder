@@ -1,0 +1,338 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Find Their Perfect Gift | Pet Printed</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #ED931B;
+      --cream: #F8F7F3;
+      --dark: #363636;
+      --blue: #334FB4;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--dark);
+      font-family: "Source Sans 3", sans-serif;
+    }
+
+    header {
+      background: white;
+      padding: 18px 20px;
+      text-align: center;
+      border-bottom: 1px solid #e9e5df;
+    }
+
+    .logo {
+      font-size: 29px;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+    }
+
+    .logo span { color: var(--orange); }
+
+    main {
+      width: min(100% - 32px, 580px);
+      margin: 38px auto 70px;
+    }
+
+    .eyebrow {
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    h1 {
+      font-size: clamp(30px, 6vw, 42px);
+      line-height: 1.1;
+      margin: 12px 0;
+    }
+
+    .intro {
+      font-size: 18px;
+      line-height: 1.5;
+      margin-bottom: 30px;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid #e9e5df;
+      border-radius: 22px;
+      padding: 25px;
+      box-shadow: 0 10px 30px #3636360a;
+    }
+
+    .progress {
+      height: 7px;
+      background: #eeeae3;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 25px;
+    }
+
+    .progress div {
+      height: 100%;
+      width: 25%;
+      background: var(--orange);
+      transition: width .2s;
+    }
+
+    .step-label {
+      font-size: 13px;
+      color: #777;
+      font-weight: 700;
+    }
+
+    h2 {
+      font-size: 27px;
+      line-height: 1.2;
+      margin: 12px 0 24px;
+    }
+
+    .choices {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .choice {
+      background: var(--cream);
+      color: var(--dark);
+      border: 2px solid transparent;
+      border-radius: 14px;
+      padding: 20px 10px;
+      min-height: 75px;
+      font: inherit;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .choice:hover, .choice:focus-visible {
+      border-color: var(--orange);
+      outline: none;
+    }
+
+    .choice.selected {
+      border-color: var(--orange);
+      background: #fff4e4;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 25px;
+    }
+
+    .back, .next {
+      border: 0;
+      border-radius: 12px;
+      padding: 15px 20px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .back { background: #eeeae3; }
+
+    .next {
+      flex: 1;
+      background: var(--orange);
+      color: #292929;
+    }
+
+    .next:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .result {
+      background: var(--cream);
+      padding: 18px;
+      border-radius: 14px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 420px) {
+      main { margin-top: 25px; }
+      .panel { padding: 19px; }
+      .choices { gap: 9px; }
+      .choice { font-size: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">pet<span>printed</span></div>
+  </header>
+
+  <main>
+    <div class="eyebrow">A little help with gifting</div>
+    <h1>They love their pet.<br>You'll love their gift.</h1>
+    <p class="intro">
+      Tell us a little about them. We'll help you find
+      something they'll actually want to keep.
+    </p>
+
+    <section class="panel" aria-live="polite">
+      <div class="progress">
+        <div id="progress"></div>
+      </div>
+      <div id="content"></div>
+    </section>
+  </main>
+
+  <script>
+    const questions = [
+      {
+        title: "Who's the lucky pet lover?",
+        key: "recipient",
+        options: ["Partner", "Mom or Dad", "Friend", "Someone else"]
+      },
+      {
+        title: "Who has their heart?",
+        key: "animal",
+        options: ["Dog", "Cat", "Horse", "Other / Not sure"]
+      },
+      {
+        title: "What's the occasion?",
+        key: "occasion",
+        options: [
+          "Birthday", "Christmas",
+          "Just because", "Remembering a pet"
+        ]
+      },
+      {
+        title: "What feels right for your budget?",
+        key: "budget",
+        options: [
+          "Under $25", "$25–$50",
+          "$50+", "Surprise me"
+        ]
+      }
+    ];
+
+    let step = 0;
+    const answers = {};
+    const content = document.getElementById("content");
+    const progress = document.getElementById("progress");
+
+    function render() {
+      progress.style.width =
+        Math.min((step + 1) / questions.length * 100, 100) + "%";
+
+      if (step >= questions.length) {
+        renderSummary();
+        return;
+      }
+
+      const question = questions[step];
+
+      content.innerHTML = `
+        <div class="step-label">
+          QUESTION ${step + 1} OF ${questions.length}
+        </div>
+        <h2>${question.title}</h2>
+        <div class="choices" id="choices"></div>
+        <div class="actions">
+          ${step > 0
+            ? '<button class="back" id="back">Back</button>'
+            : ''}
+          <button class="next" id="next" disabled>
+            ${step === questions.length - 1
+              ? 'Find my gifts'
+              : 'Continue'}
+          </button>
+        </div>
+      `;
+
+      const choices = document.getElementById("choices");
+      const next = document.getElementById("next");
+
+      question.options.forEach(option => {
+        const button = document.createElement("button");
+        button.className = "choice";
+        button.type = "button";
+        button.textContent = option;
+
+        if (answers[question.key] === option) {
+          button.classList.add("selected");
+          next.disabled = false;
+        }
+
+        button.addEventListener("click", () => {
+          answers[question.key] = option;
+
+          choices.querySelectorAll(".choice").forEach(item => {
+            item.classList.remove("selected");
+          });
+
+          button.classList.add("selected");
+          next.disabled = false;
+        });
+
+        choices.appendChild(button);
+      });
+
+      next.addEventListener("click", () => {
+        if (!answers[question.key]) return;
+        step++;
+        render();
+      });
+
+      if (step > 0) {
+        document.getElementById("back")
+          .addEventListener("click", () => {
+            step--;
+            render();
+          });
+      }
+    }
+
+    function renderSummary() {
+      content.innerHTML = `
+        <div class="step-label">ALL DONE</div>
+        <h2>We've got the picture!</h2>
+        <div class="result">
+          <p id="summary"></p>
+          <p>
+            Your product picks will appear here once
+            we've connected the verified catalog.
+          </p>
+        </div>
+        <div class="actions">
+          <button class="back" id="restart">
+            Start again
+          </button>
+        </div>
+      `;
+
+      document.getElementById("summary").textContent =
+        `Shopping for: ${answers.recipient}. ` +
+        `Pet: ${answers.animal}. ` +
+        `Occasion: ${answers.occasion}. ` +
+        `Budget: ${answers.budget}.`;
+
+      document.getElementById("restart")
+        .addEventListener("click", () => {
+          step = 0;
+          Object.keys(answers).forEach(key => delete answers[key]);
+          render();
+        });
+    }
+
+    render();
+  </script>
+</body>
+</html>
