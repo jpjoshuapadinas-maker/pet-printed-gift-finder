@@ -204,7 +204,7 @@
       {
         title: "Who has their heart?",
         key: "animal",
-        options: ["Dog", "Cat", "Horse", "Other / Not sure"]
+        options: ["Dog", "Cat", "Horse", "Rabbit", "Other / Not sure"]
       },
       {
         title: "What's the occasion?",
@@ -348,7 +348,7 @@ async function renderSummary() {
 
     const normalize = value => String(value ?? "").trim().toLowerCase();
     const animal = normalize(answers.animal);
-    const occasion = normalize(answers.occasion);
+    const occasion = answers.occasion === "Remembering a pet" ? "memorial" : normalize(answers.occasion);
     const recipient = normalize(answers.recipient);
     const budget = answers.budget;
 
@@ -366,7 +366,7 @@ async function renderSummary() {
 
     const animalMatches = product => {
       const tag = normalize(product.animal);
-      return animal === "other / not sure" || tag === animal ||
+      return tag === animal ||
         ["any", "all", "any animal", "all pets"].includes(tag);
     };
 
