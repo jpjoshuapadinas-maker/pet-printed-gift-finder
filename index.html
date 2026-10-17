@@ -352,23 +352,35 @@ async function renderSummary() {
     const recipient = normalize(answers.recipient);
     const budget = answers.budget;
 
+    // Treat the selected range as a preference, not a strict minimum spend.
     const minPrice = budget === "$25–$50" ? 25 : budget === "$50+" ? 50 : 0;
     const maxPrice = budget === "Under $25" ? 25 : budget === "$25–$50" ? 50 : Infinity;
-    const budgetMatches = product => {
-      const price = Number(product.price);
-      return Number.isFinite(price) && price >= minPrice && price <= maxPrice;
+    const priceOf = product => Number(product.price);
+    const priceTier = product => {
+      if (budget === "Surprise me") return 0;
+      const price = priceOf(product);
+      if (price >= minPrice && price <= maxPrice) return 0; // Preferred range
+      if (price < minPrice) return 1; // Cheaper, still suitable
+      return 2; // Above stated spending limit
     };
 
-    // Keep the selected animal relevant. A generic "Any" product is also eligible.
     const animalMatches = product => {
       const tag = normalize(product.animal);
       return animal === "other / not sure" || tag === animal ||
         ["any", "all", "any animal", "all pets"].includes(tag);
     };
 
+    // Only show items for the selected occasion or genuinely all-purpose gifts.
+    // For example, Father's Day must not appear in Birthday recommendations.
+    const occasionMatches = product => {
+      const tag = normalize(product.occasion);
+      return tag === occasion || ["any occasion", "any", "all"].includes(tag);
+    };
+
     const eligible = products.filter(product =>
       product && product.name && product.url && animalMatches(product) &&
-      Number.isFinite(Number(product.price))
+      occasionMatches(product) && Number.isFinite(priceOf(product)) &&
+      priceOf(product) >= 0
     );
 
     const score = product => {
@@ -384,18 +396,22 @@ async function renderSummary() {
     };
 
     const sortByRelevance = (a, b) => score(b) - score(a) ||
-      Number(a.price) - Number(b.price);
+      priceOf(a) - priceOf(b);
 
-    const withinBudget = eligible.filter(budgetMatches).sort(sortByRelevance);
-    const alternatives = eligible.filter(product => !budgetMatches(product)).sort(sortByRelevance);
-    const matches = [...withinBudget, ...alternatives].slice(0, 6);
-    const showingAlternatives = matches.some(product => !budgetMatches(product));
+    // Prefer the chosen range, then less expensive gifts, then above-budget
+    // alternatives only if nothing affordable is available.
+    const preferred = eligible.filter(p => priceTier(p) === 0).sort(sortByRelevance);
+    const cheaper = eligible.filter(p => priceTier(p) === 1).sort(sortByRelevance);
+    const expensive = eligible.filter(p => priceTier(p) === 2).sort(sortByRelevance);
+    const affordable = [...preferred, ...cheaper];
+    const matches = (affordable.length ? affordable : expensive).slice(0, 6);
+    const showingAboveBudget = matches.some(p => priceTier(p) === 2);
 
     container.textContent = "";
 
     if (!matches.length) {
       container.textContent =
-        "We don't have suitable products for this pet in the current catalog yet. Please try another pet type.";
+        "We don't have suitable gifts for this pet and occasion in the current catalog yet. Try another occasion or pet type.";
       return;
     }
 
@@ -403,11 +419,20 @@ async function renderSummary() {
     heading.textContent = "Your personalized gift picks";
     container.appendChild(heading);
 
-    if (showingAlternatives) {
+    if (showingAboveBudget) {
       const note = document.createElement("p");
-      note.textContent = withinBudget.length
-        ? "Some additional suggestions are outside your selected budget. Check the price before buying."
-        : "No products match your selected budget right now. Here are the closest pet-related alternatives, which may be outside your budget.";
+      note.textContent =
+        "No gifts at or below your selected spending limit are available for this pet and occasion. These alternatives start above your budget.";
+      container.appendChild(note);
+    } else if (budget === "$25–$50" && !preferred.length && cheaper.length) {
+      const note = document.createElement("p");
+      note.textContent =
+        "No gifts start within $25–$50 for this pet and occasion, but these lower-priced options may be a great fit.";
+      container.appendChild(note);
+    } else if (budget === "$50+" && !preferred.length && cheaper.length) {
+      const note = document.createElement("p");
+      note.textContent =
+        "No gifts start at $50 or more for this pet and occasion, but these lower-priced options may be a great fit.";
       container.appendChild(note);
     }
 
@@ -431,9 +456,11 @@ async function renderSummary() {
       name.textContent = product.name;
 
       const price = document.createElement("p");
+      const tier = priceTier(product);
       price.textContent =
-        "From $" + Number(product.price).toFixed(2) +
-        (budgetMatches(product) ? "" : " · Outside selected budget");
+        "From $" + priceOf(product).toFixed(2) +
+        (tier === 1 ? " · Great value" :
+         tier === 2 ? " · Above selected budget" : "");
 
       const link = document.createElement("a");
       link.href = product.url;
