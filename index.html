@@ -404,7 +404,25 @@ async function renderSummary() {
     const cheaper = eligible.filter(p => priceTier(p) === 1).sort(sortByRelevance);
     const expensive = eligible.filter(p => priceTier(p) === 2).sort(sortByRelevance);
     const affordable = [...preferred, ...cheaper];
-    const matches = (affordable.length ? affordable : expensive).slice(0, 6);
+
+    // Keep only one recommendation per product page, even if catalog rows
+    // contain different variant links or tracking query parameters.
+    const uniqueProducts = items => {
+      const seen = new Set();
+      return items.filter(product => {
+        let key;
+        try {
+          const url = new URL(product.url);
+          key = (url.origin + url.pathname).replace(/\/$/, "").toLowerCase();
+        } catch (_) {
+          key = String(product.url).split(/[?#]/)[0].replace(/\/$/, "").toLowerCase();
+        }
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+    };
+    const matches = uniqueProducts(affordable.length ? affordable : expensive).slice(0, 6);
     const showingAboveBudget = matches.some(p => priceTier(p) === 2);
 
     container.textContent = "";
