@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "scope": "98 currently Cat-compatible approved products; other images unknown",
+  "scope": "All 145 approved product primary images; unknown retained for unclear images",
   "products": {
     "16385370194307": {
       "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6acf6662606b5.webp?v=1791977062",
@@ -986,6 +986,630 @@
       "imageSha256": "75c5161bfc10290aa394d0c8aeb68299ac7d81fd5da81bf46bdca3ab07b740ff",
       "method": "Visual review of exact catalog sample image; not evidence of customization capability",
       "productUrl": "https://pet-printed.com/products/together-with-my-pet-personalized-phone-case"
+    },
+    "16388368236931": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6ad0d9a24ce8a.webp?v=1792097468",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "fd83626df9579aa36702f8173e5625478af2518edf121cfe9c822ceb483af6e0",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-ornament-watercolor-christmas-santa-hat-dog-name"
+    },
+    "16386917564803": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6ad0a91eb23f7.webp?v=1792059737",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "b72ccf0ebceb74c861e80ba6c7f601f1622935cff486bbac5ac5f300408a15f6",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-blanket-photo-christmas-dog-selfie-humor"
+    },
+    "16383426593155": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6ace1ff61ed26.webp?v=1791893527",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "e9ea5cc7c3e326be27d21455fd38161343496dec9b7d55cbb067ec8376c1f006",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-t-shirt-cartoon-christmas-silly-dog-face"
+    },
+    "16376224055683": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6ac7e1a3109a6.webp?v=1791551495",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "31f825a1e5f3065c6be3bce770d6cb2caa95a8fd06d97aaf478b7f9b594bc727",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-ornament-christmas-dog-photo-keepsake"
+    },
+    "16375804264835": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6ac8b7ca87ee5.webp?v=1791539164",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "946070e4bd94e91974a4e6d43f263ec01bef1f56f65ba162ac560c110522a93b",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-pillow-watercolor-christmas-dog-portrait"
+    },
+    "16372531921283": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6ac721a00863a.webp?v=1791435197",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "ed602069dbc4ad6e9ae2320e210105b9ddd92995f2b0db70ff39405aae8ceb20",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-blanket-buffalo-plaid-christmas-dog-portrait"
+    },
+    "16372255523203": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6ac6924f8b1a7.webp?v=1791416531",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "c5a34e81a85e15f792ed7e7be40c1429e88169e6c4b2a7cb8ed26b74cabf175d",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-blanket-christmas-snowflake-dog-portrait"
+    },
+    "16371652362627": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6ac67fab9ce05.webp?v=1791393715",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "28aa72308d21d65fe6d6a2033f286c88ff5b11ee3d17060a906e899caddb13d9",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-ornament-watercolor-christmas-first-christmas-memorial-dog"
+    },
+    "16371648397699": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6ac67f1d13690.webp?v=1791393570",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "a6149468cecd8995c3c33fa293ebaf774db86de5d7b2d7cfcf946ce15b7ff243",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-doormat-watercolor-christmas-santa-hat-dog"
+    },
+    "16369289134467": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6ac514e8d4efa.webp?v=1791300846",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "d3e42acf5bd6db62ea93750948dfd71cd6563c2303e01fa7eaa7df1c7b43f180",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-doormat-vintage-christmas-train-dog"
+    },
+    "16369045111171": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6ac4ef476b3ec_e1d8d952-2ab8-43d0-8f22-014b62b57d8a.webp?v=1791291255",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "c2fdf0df49d223e2811b897305bcadb38515385d8dde5abda02097a8878f058f",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-blanket-hand-drawn-christmas-santa-dog"
+    },
+    "16368913252739": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6ac4dfaf7c69c.webp?v=1791287235",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "58a90a2f26c7f0162b266c6db973b20d90dd1d94c054c215b88f925013e54e61",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-t-shirt-cartoon-christmas-dog-lover-holiday"
+    },
+    "16368658547075": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6acd24c9943f3.webp?v=1791829903",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "a60b18761f27f5cc739ade175af95d1dd2d52a851d641113a16c5cd2e48920a8",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-poster-watercolor-peekaboo-dog"
+    },
+    "16366241448323": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6acd24ca66f75.webp?v=1791829883",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "b40285397f80335e483a01b0dfc322f6da77f9e59eddc2a2d759cb510311473c",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-poster-framed-watercolor-dog-painting"
+    },
+    "16362624844163": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6abffd062503e.webp?v=1790967061",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "3279bdfcbdc202060438c70b76416745db62ea039bdd44418cdbea50a3a6dd79",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-t-shirt-dog-dad-photo"
+    },
+    "16362510844291": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6abfe9c4d793a.webp?v=1790962120",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "ffef328d66377fbfe366e6d7c7dce491807fd8ee93b0a19db48c3d3316bc3e50",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-ornament-define-naughty-guilty-dog"
+    },
+    "16359320355203": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6acd24cdabd82.webp?v=1791829855",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "d1dc763d0b6575bff8ecaefe942b6a6dc2c0c8701dfc1db2da46b96d5250e111",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-poster-soft-sketch-dog-illustration"
+    },
+    "16348486140291": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6ac27bbfc3c07.webp?v=1791130714",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "5c8db4bd3fb5b8562ef5651165dd280f08f1b80b5d808fa54d2f6482797a7d68",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-sweatshirt-cute-dog-face"
+    },
+    "16246064251267": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6a96e346f16fd.webp?v=1788273484",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "470ba6e951aaac60c494881c18b67bed66c99b683ff7a59926d432025a1b714e",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/graffiti-personalized-whiskey-glass"
+    },
+    "16246064120195": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6a87fc075b750.webp?v=1787296786",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "9e119444af0559e51bd2e18a525f87e9732680900023d159c1f7e8af703210d5",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/color-squares-personalized-whiskey-glass"
+    },
+    "16246064054659": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6a96e35dc054b.webp?v=1788273507",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "767503609f5903f6ff8f12195d1187f479c0c9da76785e4c7fa8c00d90ae8649",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/splash-personalized-whiskey-glass"
+    },
+    "16246063923587": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6a7b9679b154c.webp?v=1786613626",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "76d6b4b799a0ec750e519f6c23b4e93524497e105633aea6337233006b97d1d3",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/water-colors-personalized-whiskey-glass"
+    },
+    "16241442423171": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6a7a3fbe7a2a4.webp?v=1786397399",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "28606a920996160abfb009c57d7e80d3077eb26d9b59b79c2b2a7f7b7b9d4d69",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/pencil-portrait-personalized-whiskey-glass"
+    },
+    "16241442390403": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6a96e7457a926.webp?v=1788274507",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "b1643aa4d1c5ada58f7a30b8d8efa6fe00d833ce5d40a91ca50a2501b789d646",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/watercolor-realistic-portrait-personalized-whiskey-glass"
+    },
+    "16241442357635": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6a9ad7cae6c21.webp?v=1788532690",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "a68de1d91883596baaeab483da713fd873686c559722b47b99f894ec142004d5",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/pet-portrait-personalized-whiskey-glass"
+    },
+    "16241442259331": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6a7a3e0765274.webp?v=1786397377",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "2766dd2ad25b1c1c52f8e93dc2405b9f13d1189093c77e10ec21cadbf8606230",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/watercolor-portrait-personalized-whiskey-glass"
+    },
+    "16241442226563": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6a7a3cb82c1ae.webp?v=1786397368",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "7bee61a955aa97540b946ca74dc5c2fecb130ec0797a944ddc3fd3247d23396f",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/lineart-personalized-whiskey-glass"
+    },
+    "16241442161027": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6a7a3bcf4951a.webp?v=1786397361",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "a06675a42d0b0e44493e8ed76034b256934c0fd7494e1443150762f8bc139599",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/charcoal-personalized-whiskey-glass"
+    },
+    "16241442128259": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6a7a42b7df9d8.webp?v=1786397372",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "7f9f67d34c50c0eb28ef0342d781e28a3fc50896e19d6382388b7ae68925bee9",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/watercolor-personalized-whiskey-glass"
+    },
+    "16048296165763": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6a3b86e4a1a2e.webp?v=1782286064",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "5553baf176a55bab27d6659754cb336bf363b96523f61e69ea3fc70d1f7b1d1a",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/usa-dog-dad-personalized-t-shirt"
+    },
+    "16009165603203": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6acd24dd9dd35.webp?v=1791829551",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "deab2740f11541cc6a976b3bdd46aa574419573fdafcb97a2cc01eed8ffafc99",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/top-dog-personalized-poster"
+    },
+    "8718092075343": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/68f69be45813e_426d23b1-535d-464d-b41c-b183c8635c77.webp?v=1769695147",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "e7c1a8399c9e12514287ce5f7032ea1ead9dc639ab1a916d5365a605fe8ceaa0",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/beer-woof-personalized-t-shirt"
+    },
+    "9273170952527": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6a69c5f59b4dd_c0aa62fe-94e0-444c-be54-f7bc016e6787.webp?v=1791130826",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "8dc1a4efc45b80d132d53ddb9bb36f5e4c1d9344cfa8c2c1fc3ca93bce465856",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/beer-with-dogs-personalized-hawaiian-shirt"
+    },
+    "15098872824195": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/67a6150d6cd5a.webp?v=1744471309",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "cb9fb5c2d94e06539b51bec56d4f78ea7c7dbda9dfdde2b797e253fe01dad840",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/dog-silhouette-personalized-necklace"
+    },
+    "15894638756227": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6acd24eb277f2.webp?v=1791829388",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "2cf5c8fd519cd5a159c16f51bc678b9a594f6db3c434c2f1ab1b0e36b33f4c79",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-poster-with-dog-or-cat-polygon-art"
+    },
+    "15894629581187": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6acd24e6751b9.webp?v=1791829394",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "8e39ea8a7f2629925cd499d22133bb400a16c8876277a222e35ef9d5e260549f",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-poster-with-dog-or-cat-toile-de-jouy"
+    },
+    "15894628893059": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6ac6cfc081ea4_543206a8-859c-4258-82dc-17257eed9ed0.webp?v=1791414650",
+      "animals": [],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "3d0d17831866125ad55dd8bc0f677f7915d603c134653589823419613610a6fe",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-mug-not-from-your-sack"
+    },
+    "15447488823683": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6aba15b32e380.webp?v=1790580154",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "afc7efd58c13474c586f86d35e59e8cb3982f3e183b4f728f7c4bad2b93ff70d",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/portrait-sketch-personalized-whiskey-glass"
+    },
+    "15447488790915": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6a70e517d0a6b.webp?v=1785783581",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "dac563c3a242776bf439c5de6ba62191c2e0f2f7d8fab1a9a8c2965371941b28",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/life-is-boring-without-your-pet-personalized-whiskey-glass"
+    },
+    "15287519740291": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6868ba5d0e0b5.webp?v=1784704101",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "01eaa5bd02ff6a96f1b01098b4f3d23ee7641e815d9086d8d7a9b36ad758bcf3",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/pet-portrait-personalized-insulated-tumbler"
+    },
+    "15214783463811": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/68f1112cf0fd8.webp?v=1760629085",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "c349da0c8fc56fdc47e032b51c2e025f17eea45b757a056088a44d8c47a30455",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/pets-on-board-personalized-car-sticker"
+    },
+    "15214775730563": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/68f11198b6894.webp?v=1760629174",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "fb6f377c339cf6892b6c45a1a923a3a70a5d57db3904a97451ffe09e4cac1818",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/broken-glass-personalized-car-sticker"
+    },
+    "15211462852995": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/68f1110e23e51.webp?v=1760629080",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "f78a972c0f196add94618e517bc9f96cd1b3f333b05d8cea6b64e23c3322d415",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/peeking-photo-personalized-car-sticker"
+    },
+    "15099816608131": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6a422018175e8.webp?v=1782718711",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "2f2bb03140c7005f4702b895cadd44c1aa1b6f46594095a2e95a639b7f8dc873",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/definition-of-my-dog-personalized-pillow"
+    },
+    "14994673402243": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6acd24f0eaa77.webp?v=1791829288",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "785b0dfaf838cb427d6cddc03188872e4ef02f3f4fce31d4669735bc35f1e84d",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/furbes-personalized-poster"
+    },
+    "9566927487311": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6acd24f23cd02.webp?v=1791829279",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "09c0ecd07423c6ab906cfaae9a3e2d043ce8d2ee957be82b36497dd42825c923",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/dogue-personalized-poster"
+    },
+    "8704079429967": {
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6a39337d57f08.webp?v=1789461792",
+      "animals": [
+        "Rabbit"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "ee67f9de1508f04cf5d314a8b9d0bcebec17ae3f08b148a5ac842f9893abef4a",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/snuggle-bunny-personalized-phone-case"
     }
-  }
+  },
+  "reviewedGalleryAlternatives": [
+    {
+      "id": "16385267433859",
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6acf55f1deeb9.webp?v=1791972853",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "0c565a1c25fb25a6ffbfd829541594c9a0262e68f560be63fbd000adbd18367e",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-magnet-photo-christmas-winter-pet"
+    },
+    {
+      "id": "16384757432707",
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6acefa656c360.webp?v=1791949417",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "8794a21c967f0ec923ce57f554392ae84c1d2c0785adf6ebcb1ec5f5157fd8f3",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-ornament-once-by-my-side-forever-in-my-heart"
+    },
+    {
+      "id": "16382677123459",
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6acdbc41b9f87.webp?v=1791867973",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "d8faeb37c8253dd44a1827b5604e9bf2d80cf06f151c62245e51d0cda3588850",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-ornament-christmas-watercolor-pet-by-the-tree"
+    },
+    {
+      "id": "8718788362575",
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6744753369808.webp?v=1732539704",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "fab5b3c0eed71cfe5d96ade194a00f493ca66d9cfba57be5cf9fefa4d4647bee",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/christmas-cuddle-time-with-pets-single-personalized-blanket"
+    },
+    {
+      "id": "8718788362575",
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/674475351a9b2.webp?v=1732539704",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "e966fd2e5b5f289fbfbc409a9e67eae3907809d6af0edcaa8325f1651c82a3da",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/christmas-cuddle-time-with-pets-single-personalized-blanket"
+    },
+    {
+      "id": "8718787543375",
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/674476b810851.webp?v=1732540093",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "c8a37e61580c6d778b4a36b329184e53b7e064c807a55b59c9d4c76e75ed361d",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/christmas-cuddle-time-with-pets-personalized-blanket"
+    },
+    {
+      "id": "8718787543375",
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/674476ba44087.webp?v=1732540093",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "bd234bb6686548eac9acb33ee200a1b762427afdadca3bbbc57551a9cda70d38",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/christmas-cuddle-time-with-pets-personalized-blanket"
+    },
+    {
+      "id": "8709217026383",
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6a42202b23ed6.webp?v=1782718676",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "39546ddbf6c5e47709433efbd15dbb440b1bc9811f4c9fa599bfe01e0835b6d7",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/christmas-cuddle-time-with-pets-personalized-pillow"
+    },
+    {
+      "id": "8709217026383",
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6a422034bd042.webp?v=1782718676",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "1de25fc57442fcbdf80c533e3f1704426cff8308af6adf30961a10d33c80b993",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/christmas-cuddle-time-with-pets-personalized-pillow"
+    },
+    {
+      "id": "15399772488067",
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6a294ce3a397a.webp?v=1791309206",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "ed9ed9e5d69ef79528c7bdb716ff70d8bd70f04bff52cd6f7987cd8748d0ca73",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/your-photo-christmas-edition-personalized-socks"
+    },
+    {
+      "id": "16371664617859",
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6ac6813ec757b.webp?v=1791394115",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "4486a4e79e9c523e9030cc9bfe72bf9574a440d75a2d948867428e362ff7c2f4",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-ornament-illustrated-christmas-pet-book-lover"
+    },
+    {
+      "id": "16362580345219",
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/6abff3a1a6a0e.webp?v=1790964645",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "4aba4bad7c459a7c77567240ccd48a1a9eae08b7fbff6e81f28709f84f90325c",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/personalized-ornament-forever-our-angel-memorial"
+    },
+    {
+      "id": "8718967112015",
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/651fd19d4b194.webp?v=1717154347",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "4cf393d085eb62bce7381400999fbade877853b5d7399735475c6763b4fe58e1",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/by-the-fireplace-personalized-blanket"
+    },
+    {
+      "id": "8718967112015",
+      "image": "https://cdn.shopify.com/s/files/1/0577/1549/0988/files/654f8f23e66b2.webp?v=1717154347",
+      "animals": [
+        "Dog"
+      ],
+      "reviewedAt": "2026-10-20",
+      "imageSha256": "8d942a8568925c87e455d586160508d37c42caa63efe6cc35112cf8e2f6ec58a",
+      "method": "Visual review of actual sample asset; not customization capability evidence",
+      "productUrl": "https://pet-printed.com/products/by-the-fireplace-personalized-blanket"
+    }
+  ]
 }

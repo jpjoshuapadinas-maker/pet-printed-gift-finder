@@ -1,0 +1,22 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
+const audit=JSON.parse(fs.readFileSync(__dirname+'/visual-relevance-audit-2026-10-20.json')),products=audit.products;
+const evidence=JSON.parse(fs.readFileSync(__dirname+'/image-animal-evidence.json')).products;
+function get(file){const h=fs.readFileSync(__dirname+'/'+file,'utf8');return {code:h.slice(h.indexOf('    const normalize ='),h.indexOf('    container.textContent = "";',h.indexOf('    const normalize ='))),metadata:JSON.parse(h.match(/const imageAnimalEvidence = (.*);/)[1])};}
+const visualAudit=JSON.parse(fs.readFileSync(__dirname+'/all-animal-visual-audit-2026-10-20.json'));
+const before={code:visualAudit.baselineEngine,metadata:visualAudit.baselineImageMetadata},after=get('index.html');
+function run(src,answers){return vm.runInNewContext('(()=>{'+src.code+';return {matches,eligible,pool,uniqueProducts,diversePicks,occasionSpecific,occasionGeneral,selectPicks:typeof selectPicks==="function"?selectPicks:diversePicks};})()',{answers,products,URL,imageAnimalEvidence:src.metadata});}
+function pages(r){let pages=[Array.from(r.matches)];let remaining=r.uniqueProducts([...r.occasionSpecific,...r.occasionGeneral]).filter(p=>!r.matches.includes(p));while(remaining.length){let page=r.selectPicks(remaining);assert(page.length&&page.length<=6);pages.push(Array.from(page));remaining=remaining.filter(p=>!page.includes(p));assert(pages.length<100);}return pages;}
+function state(p,animal){if(animal==='Other / Not sure')return 'unspecified';let e=evidence[p.id];return e?.image===p.image?(e.animals.includes(animal)?'matching':e.animals.length?'mismatch':'unknown'):'unknown';}
+function counts(ps,animal){const c={matching:0,mismatch:0,unknown:0,unspecified:0};for(const p of ps)c[state(p,animal)]++;return c;}
+let rows=[],summary={};for(const animal of ['Cat','Dog','Horse','Rabbit','Other / Not sure']){
+ summary[animal]={scenarios:0,initialBefore:{matching:0,mismatch:0,unknown:0,unspecified:0},initialAfter:{matching:0,mismatch:0,unknown:0,unspecified:0},allBefore:{matching:0,mismatch:0,unknown:0,unspecified:0},allAfter:{matching:0,mismatch:0,unknown:0,unspecified:0},zeroResults:0,pagesBefore:0,pagesAfter:0};
+ for(const recipient of ['Partner','Mom or Dad','Friend','Someone else'])for(const occasion of ['Birthday','Christmas','Just because','Remembering a pet'])for(const budget of ['Under $25','$25–$50','$50+','Surprise me']){
+  const answers={recipient,animal,occasion,budget},b=run(before,answers),a=run(after,answers),bp=pages(b),ap=pages(a),all=ap.flat();
+  assert.deepEqual(Array.from(a.eligible,p=>p.id).sort(),Array.from(b.eligible,p=>p.id).sort());assert.deepEqual(all.map(p=>p.id).sort(),bp.flat().map(p=>p.id).sort());assert.equal(new Set(all.map(p=>p.url)).size,all.length);assert(a.matches.length>0);
+  for(const p of all){assert(!p.url.includes('personalized-mug-not-from-your-sack'));assert(new URL(p.url).hostname==='pet-printed.com');assert(Number(p.price)>0);if(budget==='Under $25')assert(Number(p.price)<25);if(budget==='$25–$50')assert(Number(p.price)<=50);const tags=p.animal.toLowerCase().split(',').map(x=>x.trim());assert(tags.includes(animal.toLowerCase())||tags.includes('any'));assert(occasion==='Remembering a pet'?p.occasion==='Memorial':[occasion,'Any Occasion'].includes(p.occasion));}
+  let row={...answers,before:bp.map(x=>x.map(p=>p.id)),after:ap.map(x=>x.map(p=>p.id)),initialBefore:counts(bp[0],animal),initialAfter:counts(ap[0],animal),allBefore:counts(bp.flat(),animal),allAfter:counts(all,animal)};rows.push(row);
+  if(animal!=='Other / Not sure'){const order={matching:0,unknown:1,mismatch:2};for(let i=1;i<all.length;i++)assert(order[state(all[i-1],animal)]<=order[state(all[i],animal)],'visual tiers must stay ordered across pages');}
+  const s=summary[animal];s.scenarios++;s.pagesBefore+=bp.length;s.pagesAfter+=ap.length;for(const k of ['initialBefore','initialAfter','allBefore','allAfter'])for(const state of Object.keys(s[k]))s[k][state]+=row[k][state];
+ }
+}
+assert.equal(rows.length,320);assert.equal(Object.keys(evidence).length,145);const out={summary,scenarios:320,paginationPages:rows.reduce((n,r)=>n+r.after.length,0),rows};if(process.env.WRITE_VISUAL_AUDIT)fs.writeFileSync(__dirname+'/all-animal-visual-results.json',JSON.stringify(out));console.log(JSON.stringify({summary,scenarios:out.scenarios,paginationPages:out.paginationPages},null,2));
