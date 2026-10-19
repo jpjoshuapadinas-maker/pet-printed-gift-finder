@@ -18,3 +18,9 @@ assert.equal(run([p(10,'a',{occasion:'Memorial'})],'Surprise me',{occasion:'Reme
 assert.equal(run(Array.from({length:12},(_,i)=>p(i+1))).matches.length,6);
 assert.deepEqual(prices(run([p(100),p(1)],'Surprise me')),[1,100]);
 console.log('PASS: 13 recommendation scenarios, including invalid-price cases');
+assert.equal(run([p(10,'multi',{animal:'Dog, Cat'})]).matches.length,1);
+assert.equal(run([p(10,'multi',{animal:'Dog, Cat'})],'Surprise me',{animal:'Horse'}).matches.length,0);
+assert.equal(run([p(10,'multi',{animal:'Dog, Cat, Horse, Rabbit'})],'Surprise me',{animal:'Rabbit'}).matches.length,1);
+assert.equal(run([p(10,'multi',{animal:'Dog, Cat, Horse, Rabbit'})],'Surprise me',{animal:'Other / Not sure'}).matches.length,0);
+assert.equal(run([p(10,'multi',{animal:'Bunny'})],'Surprise me',{animal:'Rabbit'}).matches.length,1);
+console.log('PASS: 5 additional multi-species scenarios');
