@@ -369,10 +369,13 @@ async function renderSummary() {
       return 2; // Above stated spending limit
     };
 
+    const animalTags = product => normalize(product.animal)
+      .split(/[,;|]/).map(tag => tag.trim())
+      .map(tag => tag === "bunny" ? "rabbit" : tag).filter(Boolean);
     const animalMatches = product => {
-      const tag = normalize(product.animal);
-      return tag === animal ||
-        ["any", "all", "any animal", "all pets"].includes(tag);
+      const tags = animalTags(product);
+      return tags.includes(animal) ||
+        tags.some(tag => ["any", "all", "any animal", "all pets"].includes(tag));
     };
 
     // Only show items for the selected occasion or genuinely all-purpose gifts.
@@ -398,10 +401,10 @@ async function renderSummary() {
     );
 
     const score = product => {
-      const animalTag = normalize(product.animal);
+      const selectedAnimalSupported = animalTags(product).includes(animal);
       const occasionTag = normalize(product.occasion);
       const recipientTag = normalize(product.recipient);
-      let points = animalTag === animal ? 100 : 0;
+      let points = selectedAnimalSupported ? 100 : 0;
       if (occasionTag === occasion) points += 25;
       else if (["any occasion", "any", "all"].includes(occasionTag)) points += 8;
       if (recipientTag === recipient) points += 12;
@@ -520,4 +523,5 @@ async function renderSummary() {
   </script>
 </body>
 </html>
+
 
