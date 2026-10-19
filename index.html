@@ -382,6 +382,7 @@ async function renderSummary() {
     // For example, Father's Day must not appear in Birthday recommendations.
     const occasionMatches = product => {
       const tag = normalize(product.occasion);
+      if (occasion === "memorial") return tag === "memorial";
       return tag === occasion || ["any occasion", "any", "all"].includes(tag);
     };
 
