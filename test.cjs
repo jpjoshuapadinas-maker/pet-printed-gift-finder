@@ -1,7 +1,8 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const html=fs.readFileSync(__dirname+'/index.html','utf8');
+const imageAnimalEvidence=JSON.parse(html.match(/const imageAnimalEvidence = (.*);/)[1]);
 const source=html.slice(html.indexOf('    const normalize ='),html.indexOf('    container.textContent = "";',html.indexOf('    const normalize =')));
-function run(products,budget='Under $25',extra={}){return vm.runInNewContext('(function(){'+source+';return {matches,showingAboveBudget};})()', {products,answers:{animal:'Cat',occasion:'Birthday',recipient:'Partner',budget,...extra},URL});}
+function run(products,budget='Under $25',extra={}){return vm.runInNewContext('(function(){'+source+';return {matches,showingAboveBudget};})()', {imageAnimalEvidence,products,answers:{animal:'Cat',occasion:'Birthday',recipient:'Partner',budget,...extra},URL});}
 function p(price,slug=String(price),extra={}){return {name:slug,url:'https://pet-printed.com/products/'+slug,price,animal:'Cat',occasion:'Any Occasion',recipient:'Pet Lover',...extra};}
 const prices=r=>Array.from(r.matches,x=>Number(x.price));
 assert.deepEqual(prices(run([p(25),p(24.99)])),[24.99]);
