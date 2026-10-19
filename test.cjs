@@ -27,3 +27,8 @@ console.log('PASS: 5 additional multi-species scenarios');
 
 assert.equal(run([p(10,'party',{occasion:'Any Occasion'})],'Surprise me',{occasion:'Remembering a pet'}).matches.length,0);
 console.log('PASS: memorial excludes everyday/party gifts');
+const variety=run([p(10,'a',{type:'Mug'}),p(11,'b',{type:'Mug'}),p(12,'c',{type:'Poster'}),p(13,'d',{type:'Blanket'}),p(14,'e',{type:'Case'}),p(15,'f',{type:'Socks'}),p(16,'g',{type:'Mat'})]);
+assert.equal(new Set(Array.from(variety.matches,x=>x.type)).size,6);
+assert.equal(run([p(29.95,'general',{type:'Pillow'}),p(24.95,'seasonal',{animal:'Any',occasion:'Christmas',type:'Ornament'})],'$25–$50',{occasion:'Christmas'}).matches[0].name,'seasonal');
+assert.equal(run([p(17.95,'personalized-mug-not-from-your-sack')]).matches.length,0);
+console.log('PASS: diversity, occasion priority and unrequested adult-gag exclusion');
