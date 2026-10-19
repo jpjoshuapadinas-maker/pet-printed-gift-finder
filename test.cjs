@@ -24,3 +24,6 @@ assert.equal(run([p(10,'multi',{animal:'Dog, Cat, Horse, Rabbit'})],'Surprise me
 assert.equal(run([p(10,'multi',{animal:'Dog, Cat, Horse, Rabbit'})],'Surprise me',{animal:'Other / Not sure'}).matches.length,0);
 assert.equal(run([p(10,'multi',{animal:'Bunny'})],'Surprise me',{animal:'Rabbit'}).matches.length,1);
 console.log('PASS: 5 additional multi-species scenarios');
+
+assert.equal(run([p(10,'party',{occasion:'Any Occasion'})],'Surprise me',{occasion:'Remembering a pet'}).matches.length,0);
+console.log('PASS: memorial excludes everyday/party gifts');
