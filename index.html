@@ -344,7 +344,7 @@ async function renderSummary() {
     }
 
     const data = await response.json();
-    const products = data.products || [];
+    const products = Array.isArray(data.products) ? data.products : [];
 
     const normalize = value => String(value ?? "").trim().toLowerCase();
     const animal = normalize(answers.animal);
@@ -355,11 +355,16 @@ async function renderSummary() {
     // Treat the selected range as a preference, not a strict minimum spend.
     const minPrice = budget === "$25–$50" ? 25 : budget === "$50+" ? 50 : 0;
     const maxPrice = budget === "Under $25" ? 25 : budget === "$25–$50" ? 50 : Infinity;
-    const priceOf = product => Number(product.price);
+    const priceOf = product => {
+      const value = product.price;
+      if (typeof value !== "number" && typeof value !== "string") return NaN;
+      if (typeof value === "string" && !value.trim()) return NaN;
+      return Number(value);
+    };
     const priceTier = product => {
       if (budget === "Surprise me") return 0;
       const price = priceOf(product);
-      if (price >= minPrice && price <= maxPrice) return 0; // Preferred range
+      if (price >= minPrice && (budget === "Under $25" ? price < maxPrice : price <= maxPrice)) return 0; // Preferred range
       if (price < minPrice) return 1; // Cheaper, still suitable
       return 2; // Above stated spending limit
     };
@@ -377,10 +382,19 @@ async function renderSummary() {
       return tag === occasion || ["any occasion", "any", "all"].includes(tag);
     };
 
+    const isStoreProduct = product => {
+      try {
+        const url = new URL(product.url);
+        return url.protocol === "https:" && url.hostname === "pet-printed.com" &&
+          /^\/products\/[^/]+\/?$/.test(url.pathname);
+      } catch (_) { return false; }
+    };
+    const isAllowed = value => value === undefined || value === true || normalize(value) === "true";
     const eligible = products.filter(product =>
-      product && product.name && product.url && animalMatches(product) &&
+      product && product.name && isStoreProduct(product) &&
+      isAllowed(product.eligible) && isAllowed(product.available) && animalMatches(product) &&
       occasionMatches(product) && Number.isFinite(priceOf(product)) &&
-      priceOf(product) >= 0
+      priceOf(product) > 0
     );
 
     const score = product => {
@@ -402,7 +416,8 @@ async function renderSummary() {
     // alternatives only if nothing affordable is available.
     const preferred = eligible.filter(p => priceTier(p) === 0).sort(sortByRelevance);
     const cheaper = eligible.filter(p => priceTier(p) === 1).sort(sortByRelevance);
-    const expensive = eligible.filter(p => priceTier(p) === 2).sort(sortByRelevance);
+    const expensive = eligible.filter(p => priceTier(p) === 2)
+      .sort((a, b) => priceOf(a) - priceOf(b) || sortByRelevance(a, b));
     const affordable = [...preferred, ...cheaper];
 
     // Keep only one recommendation per product page, even if catalog rows
@@ -505,3 +520,4 @@ async function renderSummary() {
   </script>
 </body>
 </html>
+
