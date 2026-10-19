@@ -229,6 +229,30 @@
     const content = document.getElementById("content");
     const progress = document.getElementById("progress");
 
+    let catalogRequest;
+    async function loadCatalog() {
+      const cacheKey = "pet-printed-catalog-v1";
+      try {
+        const cached = JSON.parse(sessionStorage.getItem(cacheKey) || "null");
+        if (cached && Date.now() - cached.savedAt < 120000 && Array.isArray(cached.data.products)) return cached.data;
+      } catch (_) {}
+      if (!catalogRequest) {
+        catalogRequest = (async () => {
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 15000);
+          try {
+            const response = await fetch(CATALOG_API_URL, {signal: controller.signal});
+            if (!response.ok) throw new Error("Catalog request failed");
+            const data = await response.json();
+            if (!Array.isArray(data.products)) throw new Error("Invalid catalog response");
+            try { sessionStorage.setItem(cacheKey, JSON.stringify({savedAt: Date.now(), data})); } catch (_) {}
+            return data;
+          } finally { clearTimeout(timeout); }
+        })();
+      }
+      try { return await catalogRequest; } finally { catalogRequest = undefined; }
+    }
+
     function render() {
       progress.style.width =
         Math.min((step + 1) / questions.length * 100, 100) + "%";
@@ -327,6 +351,9 @@ async function renderSummary() {
 
   document.getElementById("restart")
     .addEventListener("click", () => {
+      const cleanUrl = new URL(location.href);
+      questions.forEach(question => cleanUrl.searchParams.delete(question.key));
+      history.replaceState(null, "", cleanUrl);
       step = 0;
       Object.keys(answers).forEach(
         key => delete answers[key]
@@ -334,16 +361,14 @@ async function renderSummary() {
       render();
     });
 
+  const resultUrl = new URL(location.href);
+  questions.forEach(question => resultUrl.searchParams.set(question.key, answers[question.key]));
+  history.replaceState(null, "", resultUrl);
   const container = document.getElementById("recommendations");
 
   try {
-    const response = await fetch(CATALOG_API_URL);
-
-    if (!response.ok) {
-      throw new Error("Catalog request failed");
-    }
-
-    const data = await response.json();
+    const data = await loadCatalog();
+    if (!container.isConnected) return;
     const products = Array.isArray(data.products) ? data.products : [];
 
     const normalize = value => String(value ?? "").trim().toLowerCase();
@@ -405,8 +430,8 @@ async function renderSummary() {
       const selectedAnimalSupported = animalTags(product).includes(animal);
       const occasionTag = normalize(product.occasion);
       const recipientTag = normalize(product.recipient);
-      let points = selectedAnimalSupported ? 100 : 0;
-      if (occasionTag === occasion) points += 25;
+      let points = selectedAnimalSupported ? 10 : 0;
+      if (occasionTag === occasion) points += 80;
       else if (["any occasion", "any", "all"].includes(occasionTag)) points += 8;
       if (recipientTag === recipient) points += 12;
       else if (["pet lover", "any", "all"].includes(recipientTag)) points += 5;
@@ -441,7 +466,32 @@ async function renderSummary() {
         return true;
       });
     };
-    const matches = uniqueProducts(affordable.length ? affordable : expensive).slice(0, 6);
+    const diversePicks = items => {
+      const unique = uniqueProducts(items);
+      const chosen = [], selected = new Set(), types = new Map();
+      const add = product => {
+        if (chosen.length >= 6 || selected.has(product)) return;
+        chosen.push(product); selected.add(product);
+        const type = normalize(product.type || product.productType || "gift");
+        types.set(type, (types.get(type) || 0) + 1);
+      };
+      // Offer different kinds of gifts before repeating the same product type.
+      unique.forEach(product => {
+        const type = normalize(product.type || product.productType || "gift");
+        if (!types.has(type)) add(product);
+      });
+      unique.forEach(product => {
+        const type = normalize(product.type || product.productType || "gift");
+        if ((types.get(type) || 0) < 2) add(product);
+      });
+      unique.forEach(add);
+      return chosen;
+    };
+    const pool = affordable.length ? affordable : expensive;
+    const occasionSpecific = pool.filter(p => normalize(p.occasion) === occasion);
+    const occasionGeneral = pool.filter(p => normalize(p.occasion) !== occasion);
+    const exactPicks = diversePicks(occasionSpecific);
+    const matches = [...exactPicks, ...diversePicks(occasionGeneral)].slice(0, 6);
     const showingAboveBudget = matches.some(p => priceTier(p) === 2);
 
     container.textContent = "";
@@ -473,11 +523,19 @@ async function renderSummary() {
       container.appendChild(note);
     }
 
+    const priceNote = document.createElement("p");
+    priceNote.textContent = "Prices are in USD. Sizes and options can cost more; shipping and taxes are extra. Check the store before ordering.";
+    container.appendChild(priceNote);
+    if (matches.length > 1 && new Set(matches.map(p => normalize(p.type || p.productType || "gift"))).size === 1) {
+      const varietyNote = document.createElement("p");
+      varietyNote.textContent = "Our verified picks for this pet and occasion are currently limited to one kind of gift.";
+      container.appendChild(varietyNote);
+    }
     const grid = document.createElement("div");
     grid.style.cssText =
-      "display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:20px;";
+      "display:grid;grid-template-columns:repeat(auto-fit,minmax(min(180px,100%),1fr));gap:16px;margin-top:20px;";
 
-    matches.forEach(product => {
+    const addCard = product => {
       const card = document.createElement("div");
       card.style.cssText =
         "background:white;border:1px solid #eee;border-radius:14px;padding:14px;";
@@ -495,7 +553,7 @@ async function renderSummary() {
       const price = document.createElement("p");
       const tier = priceTier(product);
       price.textContent =
-        "From $" + priceOf(product).toFixed(2) +
+        (normalize(product.priceType) === "fixed" ? "$" : "From $") + priceOf(product).toFixed(2) +
         (tier === 1 ? " · Great value" :
          tier === 2 ? " · Above selected budget" : "");
 
@@ -507,19 +565,50 @@ async function renderSummary() {
       link.style.cssText =
         "display:block;background:#ED931B;color:#111;text-align:center;padding:12px;border-radius:9px;text-decoration:none;font-weight:bold;";
 
-      card.append(img, name, price, link);
+      const reason = document.createElement("p");
+      const petLabel = animal === "other / not sure" ? "pet" : animal;
+      reason.textContent = occasion === "memorial"
+        ? "A personalized keepsake for remembering their pet."
+        : normalize(product.occasion) === "christmas"
+          ? "A Christmas design for someone who loves their " + petLabel + "."
+          : "A personalized gift for someone who loves their " + petLabel + ".";
+      card.append(img, name, reason, price, link);
       grid.appendChild(card);
-    });
+    };
+    matches.forEach(addCard);
 
     container.appendChild(grid);
+    let remaining = uniqueProducts([...occasionSpecific, ...occasionGeneral]).filter(p => !matches.includes(p));
+    if (remaining.length) {
+      const more = document.createElement("button");
+      more.type = "button"; more.className = "back"; more.textContent = "More gift options";
+      more.style.marginTop = "16px";
+      more.addEventListener("click", () => {
+        const nextPicks = diversePicks(remaining);
+        nextPicks.forEach(addCard);
+        remaining = remaining.filter(p => !nextPicks.includes(p));
+        if (!remaining.length) more.remove();
+      });
+      container.appendChild(more);
+    }
 
   } catch (error) {
     console.error("Gift finder error:", error);
     container.textContent =
-      "We couldn't load the gift catalog. Please try again later.";
+      "We couldn't load the gift catalog. Please try again.";
+    if (container.isConnected) {
+      const retry = document.createElement("button");
+      retry.type = "button"; retry.className = "back"; retry.textContent = "Try again";
+      retry.addEventListener("click", () => renderSummary()); container.appendChild(retry);
+    }
   }
 }
 
+    const requested = new URLSearchParams(location.search);
+    if (questions.every(question => question.options.includes(requested.get(question.key)))) {
+      questions.forEach(question => { answers[question.key] = requested.get(question.key); });
+      step = questions.length;
+    }
     render();
   </script>
 </body>
