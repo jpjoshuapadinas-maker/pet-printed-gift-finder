@@ -419,8 +419,12 @@ async function renderSummary() {
       } catch (_) { return false; }
     };
     const isAllowed = value => value === undefined || value === true || normalize(value) === "true";
+    // This adult-innuendo design needs an explicit humor preference, which
+    // the current questionnaire does not collect. Keep general picks suitable.
+    const broadAudienceExcluded = new Set(["/products/personalized-mug-not-from-your-sack"]);
     const eligible = products.filter(product =>
       product && product.name && isStoreProduct(product) &&
+      !broadAudienceExcluded.has(new URL(product.url).pathname.replace(/\/$/, "")) &&
       isAllowed(product.eligible) && isAllowed(product.available) && animalMatches(product) &&
       occasionMatches(product) && Number.isFinite(priceOf(product)) &&
       priceOf(product) > 0
