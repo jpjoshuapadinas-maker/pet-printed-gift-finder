@@ -422,7 +422,7 @@ async function renderSummary() {
           /^\/products\/[^/]+\/?$/.test(url.pathname);
       } catch (_) { return false; }
     };
-    const isAllowed = value => value === undefined || value === true || normalize(value) === "true";
+    const isAllowed = value => value === true || normalize(value) === "true";
     // This adult-innuendo design needs an explicit humor preference, which
     // the current questionnaire does not collect. Keep general picks suitable.
     const broadAudienceExcluded = new Set(["/products/personalized-mug-not-from-your-sack"]);
@@ -513,53 +513,55 @@ async function renderSummary() {
       }
       return chosen;
     };
-    const pool = affordable.length ? affordable : expensive;
-    const occasionSpecific = pool.filter(p => normalize(p.occasion) === occasion);
-    const occasionGeneral = pool.filter(p => normalize(p.occasion) !== occasion);
-    const selectPicks = items => {
-      const unique = uniqueProducts(items), chosen = [];
-      // Animal relevance comes first among already occasion-compatible gifts.
-      // Retain exact occasion priority within each visual tier, on every page.
-      for (const tier of [0, 1, 2]) {
-        const group = unique.filter(product => imageTier(product) === tier);
-        const exact = diversePicks(group.filter(product => normalize(product.occasion) === occasion));
-        const general = diversePicks(group.filter(product => normalize(product.occasion) !== occasion));
-        chosen.push(...[...exact, ...general].slice(0, 6 - chosen.length));
-      }
-      return chosen;
+
+    // Separate selected-price, below-range, and above-limit products.
+    const canonicalKey = product => {
+      const url = new URL(product.url);
+      const path = url.pathname.endsWith("/") ? url.pathname.slice(0, -1) : url.pathname;
+      return (url.origin + path).toLowerCase();
     };
-    const matches = selectPicks(pool);
-    const showingAboveBudget = matches.some(p => priceTier(p) === 2);
+    const seenAcrossTiers = new Set();
+    const distinctTier = items => uniqueProducts(items).filter(product => {
+      const key = canonicalKey(product);
+      if (seenAcrossTiers.has(key)) return false;
+      seenAcrossTiers.add(key);
+      return true;
+    });
+    const inBand = distinctTier(preferred);
+    const belowBand = distinctTier(cheaper);
+    const aboveBand = distinctTier(expensive);
+    const groups = [];
+    if (inBand.length) groups.push({title: "Within your selected budget", items: inBand});
+    if (belowBand.length) groups.push({
+      title: inBand.length ? "Lower-priced alternatives" : "Available below your selected price range",
+      items: belowBand
+    });
+    // Never show over-budget products while an in-range match exists.
+    if (!inBand.length && aboveBand.length) groups.push({
+      title: "Above-budget alternatives", items: aboveBand
+    });
+    const pool = groups.flatMap(group => group.items);
+    const matches = groups.flatMap(group => selectPicks(group.items));
 
     container.textContent = "";
-
     if (!matches.length) {
       container.textContent =
         "We don't have suitable gifts for this pet and occasion in the current catalog yet. Try another occasion or pet type.";
       return;
     }
-
     const heading = document.createElement("h3");
     heading.textContent = "Your personalized gift picks";
     container.appendChild(heading);
-
-    if (showingAboveBudget) {
+    if (!inBand.length && belowBand.length) {
       const note = document.createElement("p");
-      note.textContent =
-        "No gifts at or below your selected spending limit are available for this pet and occasion. These alternatives start above your budget.";
-      container.appendChild(note);
-    } else if (budget === "$25–$50" && !preferred.length && cheaper.length) {
-      const note = document.createElement("p");
-      note.textContent =
-        "No gifts start within $25–$50 for this pet and occasion, but these lower-priced options may be a great fit.";
-      container.appendChild(note);
-    } else if (budget === "$50+" && !preferred.length && cheaper.length) {
-      const note = document.createElement("p");
-      note.textContent =
-        "No gifts start at $50 or more for this pet and occasion, but these lower-priced options may be a great fit.";
+      note.textContent = "No verified gifts start in your chosen price range. These lower-priced options are separate from any above-budget alternatives.";
       container.appendChild(note);
     }
-
+    if (!inBand.length && aboveBand.length) {
+      const note = document.createElement("p");
+      note.textContent = "No gifts start within your selected price range for this pet and occasion. Above-budget alternatives are shown separately, with their starting-price difference from your limit.";
+      container.appendChild(note);
+    }
     const visualNote = document.createElement("p");
     if (animal === "other / not sure") {
       visualNote.textContent = "Your pet type isn't specified, so we can't match the sample animal. Check your pet's personalization options in the store before ordering.";
@@ -578,11 +580,7 @@ async function renderSummary() {
       varietyNote.textContent = "Our verified picks for this pet and occasion are currently limited to one kind of gift.";
       container.appendChild(varietyNote);
     }
-    const grid = document.createElement("div");
-    grid.style.cssText =
-      "display:grid;grid-template-columns:repeat(auto-fit,minmax(min(180px,100%),1fr));gap:16px;margin-top:20px;";
-
-    const addCard = product => {
+    const addCard = (product, grid) => {
       const card = document.createElement("div");
       card.style.cssText =
         "background:white;border:1px solid #eee;border-radius:14px;padding:14px;";
@@ -616,10 +614,16 @@ async function renderSummary() {
 
       const price = document.createElement("p");
       const tier = priceTier(product);
+      const fromPrice = normalize(product.priceType) !== "fixed";
+      const overage = Math.max(0, priceOf(product) - maxPrice);
+      const overageLabel = budget === "Under $25" && overage === 0
+        ? " · At $25.00 (not under $25)"
+        : " · " + (fromPrice ? "Starting price at least " : "") +
+          "$" + overage.toFixed(2) + " above your $" + maxPrice.toFixed(2) + " limit";
       price.textContent =
-        (normalize(product.priceType) === "fixed" ? "$" : "From $") + priceOf(product).toFixed(2) +
-        (tier === 1 ? " · Great value" :
-         tier === 2 ? " · Above selected budget" : "");
+        (fromPrice ? "From $" : "$") + priceOf(product).toFixed(2) +
+        (tier === 1 ? " · Below selected price range" :
+         tier === 2 ? overageLabel : "");
 
       const link = document.createElement("a");
       link.href = product.url;
@@ -653,21 +657,35 @@ async function renderSummary() {
       }
       grid.appendChild(card);
     };
-    matches.forEach(addCard);
-
-    container.appendChild(grid);
-    let remaining = uniqueProducts([...occasionSpecific, ...occasionGeneral]).filter(p => !matches.includes(p));
-    if (remaining.length) {
-      const more = document.createElement("button");
-      more.type = "button"; more.className = "back"; more.textContent = "More gift options";
-      more.style.marginTop = "16px";
-      more.addEventListener("click", () => {
-        const nextPicks = selectPicks(remaining);
-        nextPicks.forEach(addCard);
-        remaining = remaining.filter(p => !nextPicks.includes(p));
-        if (!remaining.length) more.remove();
-      });
-      container.appendChild(more);
+    // Separate card grids and pagination for each budget tier.
+    for (const group of groups) {
+      const sectionHeading = document.createElement("h4");
+      sectionHeading.textContent = group.title;
+      sectionHeading.style.marginTop = "24px";
+      container.appendChild(sectionHeading);
+      const grid = document.createElement("div");
+      grid.style.cssText =
+        "display:grid;grid-template-columns:repeat(auto-fit,minmax(min(180px,100%),1fr));gap:16px;margin-top:12px;";
+      const firstPicks = selectPicks(group.items);
+      firstPicks.forEach(product => addCard(product, grid));
+      container.appendChild(grid);
+      const firstKeys = new Set(firstPicks.map(canonicalKey));
+      let remaining = group.items.filter(product => !firstKeys.has(canonicalKey(product)));
+      if (remaining.length) {
+        const more = document.createElement("button");
+        more.type = "button";
+        more.className = "back";
+        more.textContent = "More " + group.title.toLowerCase();
+        more.style.marginTop = "16px";
+        more.addEventListener("click", () => {
+          const nextPicks = selectPicks(remaining);
+          nextPicks.forEach(product => addCard(product, grid));
+          const used = new Set(nextPicks.map(canonicalKey));
+          remaining = remaining.filter(product => !used.has(canonicalKey(product)));
+          if (!remaining.length || !nextPicks.length) more.remove();
+        });
+        container.appendChild(more);
+      }
     }
 
   } catch (error) {
