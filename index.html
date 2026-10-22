@@ -422,7 +422,7 @@ async function renderSummary() {
           /^\/products\/[^/]+\/?$/.test(url.pathname);
       } catch (_) { return false; }
     };
-    const isAllowed = value => value === undefined || value === true || normalize(value) === "true";
+    const isAllowed = value => value === true || normalize(value) === "true";
     // This adult-innuendo design needs an explicit humor preference, which
     // the current questionnaire does not collect. Keep general picks suitable.
     const broadAudienceExcluded = new Set(["/products/personalized-mug-not-from-your-sack"]);
@@ -463,14 +463,6 @@ async function renderSummary() {
     const sortByRelevance = (a, b) => score(b) - score(a) ||
       priceOf(a) - priceOf(b);
 
-    // Prefer the chosen range, then less expensive gifts, then above-budget
-    // alternatives only if nothing affordable is available.
-    const preferred = eligible.filter(p => priceTier(p) === 0).sort(sortByRelevance);
-    const cheaper = eligible.filter(p => priceTier(p) === 1).sort(sortByRelevance);
-    const expensive = eligible.filter(p => priceTier(p) === 2)
-      .sort((a, b) => priceOf(a) - priceOf(b) || sortByRelevance(a, b));
-    const affordable = [...preferred, ...cheaper];
-
     // Keep only one recommendation per product page, even if catalog rows
     // contain different variant links or tracking query parameters.
     const uniqueProducts = items => {
@@ -488,6 +480,14 @@ async function renderSummary() {
         return true;
       });
     };
+    // De-duplicate across ALL price bands, not only within a single page.
+    // Otherwise the same product URL can reappear under More gift options.
+    const uniqueEligible = uniqueProducts(eligible);
+    const preferred = uniqueEligible.filter(p => priceTier(p) === 0).sort(sortByRelevance);
+    const cheaper = uniqueEligible.filter(p => priceTier(p) === 1).sort(sortByRelevance);
+    const expensive = uniqueEligible.filter(p => priceTier(p) === 2)
+      .sort((a, b) => priceOf(a) - priceOf(b) || sortByRelevance(a, b));
+
     const diversePicks = items => {
       const unique = uniqueProducts(items);
       const chosen = [], selected = new Set(), types = new Map();
@@ -513,7 +513,12 @@ async function renderSummary() {
       }
       return chosen;
     };
-    const pool = affordable.length ? affordable : expensive;
+    // Never mix lower-priced gifts into the selected band on the first page.
+    // Above-budget alternatives are a last resort, not mixed with affordable gifts.
+    const hasPreferred = preferred.length > 0;
+    const hasBelow = cheaper.length > 0;
+    const pool = hasPreferred ? preferred : hasBelow ? cheaper : expensive;
+    const secondaryPool = hasPreferred ? cheaper : [];
     const occasionSpecific = pool.filter(p => normalize(p.occasion) === occasion);
     const occasionGeneral = pool.filter(p => normalize(p.occasion) !== occasion);
     const selectPicks = items => {
@@ -529,7 +534,7 @@ async function renderSummary() {
       return chosen;
     };
     const matches = selectPicks(pool);
-    const showingAboveBudget = matches.some(p => priceTier(p) === 2);
+    const showingAboveBudget = !hasPreferred && !hasBelow && matches.some(p => priceTier(p) === 2);
 
     container.textContent = "";
 
@@ -540,13 +545,17 @@ async function renderSummary() {
     }
 
     const heading = document.createElement("h3");
-    heading.textContent = "Your personalized gift picks";
+    heading.textContent = showingAboveBudget ? "Above-budget alternatives" :
+      (!hasPreferred && hasBelow ? "Gifts below your selected price range" : "Your personalized gift picks");
     container.appendChild(heading);
 
     if (showingAboveBudget) {
       const note = document.createElement("p");
-      note.textContent =
-        "No gifts at or below your selected spending limit are available for this pet and occasion. These alternatives start above your budget.";
+      const closestDifference = Math.max(0, Math.min(...expensive.map(p => priceOf(p) - maxPrice)));
+      note.textContent = closestDifference === 0
+        ? "No gifts are priced within your selected range. These alternatives start at your $25 limit (which is not under $25)."
+        : "No gifts are available within or below your selected price range. These alternatives start $" +
+          closestDifference.toFixed(2) + " above your limit. Each card shows the exact difference.";
       container.appendChild(note);
     } else if (budget === "$25–$50" && !preferred.length && cheaper.length) {
       const note = document.createElement("p");
@@ -558,6 +567,11 @@ async function renderSummary() {
       note.textContent =
         "No gifts start at $50 or more for this pet and occasion, but these lower-priced options may be a great fit.";
       container.appendChild(note);
+    }
+    if (hasPreferred && hasBelow) {
+      const belowNote = document.createElement("p");
+      belowNote.textContent = "Lower-priced gifts are available separately under More gift options.";
+      container.appendChild(belowNote);
     }
 
     const visualNote = document.createElement("p");
@@ -616,10 +630,14 @@ async function renderSummary() {
 
       const price = document.createElement("p");
       const tier = priceTier(product);
+      const aboveDifference = Math.max(0, priceOf(product) - maxPrice);
+      const priceLabel = tier === 1 ? " · Below selected range" :
+        tier === 2 ? (aboveDifference === 0
+          ? " · At $25 limit (not under $25)"
+          : " · Above budget by $" + aboveDifference.toFixed(2)) : "";
       price.textContent =
         (normalize(product.priceType) === "fixed" ? "$" : "From $") + priceOf(product).toFixed(2) +
-        (tier === 1 ? " · Great value" :
-         tier === 2 ? " · Above selected budget" : "");
+        priceLabel;
 
       const link = document.createElement("a");
       link.href = product.url;
@@ -656,16 +674,28 @@ async function renderSummary() {
     matches.forEach(addCard);
 
     container.appendChild(grid);
-    let remaining = uniqueProducts([...occasionSpecific, ...occasionGeneral]).filter(p => !matches.includes(p));
-    if (remaining.length) {
+    let remainingPrimary = uniqueProducts([...occasionSpecific, ...occasionGeneral])
+      .filter(p => !matches.includes(p));
+    let remainingBelow = uniqueProducts(secondaryPool);
+    let belowHeadingAdded = false;
+    if (remainingPrimary.length || remainingBelow.length) {
       const more = document.createElement("button");
       more.type = "button"; more.className = "back"; more.textContent = "More gift options";
       more.style.marginTop = "16px";
       more.addEventListener("click", () => {
-        const nextPicks = selectPicks(remaining);
+        const useBelow = !remainingPrimary.length;
+        const nextPicks = selectPicks(useBelow ? remainingBelow : remainingPrimary);
+        if (useBelow && nextPicks.length && !belowHeadingAdded) {
+          const label = document.createElement("h4");
+          label.textContent = "Below your selected price range";
+          label.style.gridColumn = "1 / -1";
+          grid.appendChild(label);
+          belowHeadingAdded = true;
+        }
         nextPicks.forEach(addCard);
-        remaining = remaining.filter(p => !nextPicks.includes(p));
-        if (!remaining.length) more.remove();
+        if (useBelow) remainingBelow = remainingBelow.filter(p => !nextPicks.includes(p));
+        else remainingPrimary = remainingPrimary.filter(p => !nextPicks.includes(p));
+        if (!remainingPrimary.length && !remainingBelow.length) more.remove();
       });
       container.appendChild(more);
     }
